@@ -1,4 +1,3 @@
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f2f5;color:#1a1a2e}
@@ -381,15 +380,18 @@ function buildEntities(tokens){
   return out.map(e=>`<div class="entity-chip ${map[e.type]||''}">${e.phrase}<span class="chip-type">${e.type}</span></div>`).join('');
 }
 
-function runNER(){
-  const toks=tokenize(document.getElementById('nerInput').value);
+function runNER(txt){
+  const input=document.getElementById('nerInput');
+  const src=txt||(input?input.value:'');
+  const toks=tokenize(src);
   renderTokens(toks);
-  document.getElementById('entityList').innerHTML=buildEntities(toks);
+  const el=document.getElementById('entityList');
+  if(el)el.innerHTML=buildEntities(toks);
   document.getElementById('inspector').innerHTML='👆 Click a coloured word above to see its entity details.';
 }
 
 function load(txt){
-  document.getElementById('nerInput').value=txt;runNER();
+  runNER(txt);
   document.getElementById('tokensGrid').scrollIntoView({behavior:'smooth',block:'center'});
 }
 
@@ -401,5 +403,5 @@ const BIO_INFO={
 };
 function showBio(el){document.getElementById('bioBox').innerHTML=BIO_INFO[el.dataset.t]||el.dataset.t;}
 
-runNER();
+runNER('Sundar Pichai, CEO of Google, announced plans to invest $100 billion in AI infrastructure across California and New York by 2027.');
 </script>
