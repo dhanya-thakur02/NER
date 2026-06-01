@@ -1,0 +1,405 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f2f5;color:#1a1a2e}
+.hero{background:#0f1123;color:#fff;padding:2rem 2.5rem 2.2rem}
+.badge-row{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.pill{background:#6c63ff;color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 14px;border-radius:999px}
+.pill-sub{color:rgba(255,255,255,.5);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.hero h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.4rem}
+.hero p{color:rgba(255,255,255,.6);font-size:.9rem;max-width:580px;line-height:1.6}
+.page{max-width:900px;margin:0 auto;padding:1.5rem 1.5rem 3rem}
+.sec-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:.75rem}
+.card{background:#fff;border:1px solid #e2e4ea;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.card h3{font-size:1rem;font-weight:700;margin-bottom:.4rem;color:#1a1a2e}
+.card p,.card li{font-size:.875rem;color:#444;line-height:1.65}
+.card ul{padding-left:1.1rem;margin-top:.3rem}
+.card li{margin-bottom:.2rem}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem}
+.step-flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:.75rem}
+.step-box{background:#0f1123;color:#fff;font-size:12px;font-weight:600;padding:8px 14px;border-radius:8px}
+.step-arrow{color:#6c63ff;font-size:1.1rem;font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:.75rem 0 0}
+.leg{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600}
+.leg-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.tokens-wrap{display:flex;flex-wrap:wrap;gap:8px;padding:.75rem 0}
+.tok{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.tok-word{padding:6px 10px;border-radius:7px;font-size:14px;font-weight:600;border:1.5px solid transparent;transition:transform .12s}
+.tok:hover .tok-word{transform:translateY(-2px)}
+.tok-tag{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:4px}
+.t-per .tok-word{background:#ede9fe;color:#5b21b6;border-color:#c4b5fd}.t-per .tok-tag{background:#ede9fe;color:#5b21b6}
+.t-org .tok-word{background:#dcfce7;color:#166534;border-color:#86efac}.t-org .tok-tag{background:#dcfce7;color:#166534}
+.t-loc .tok-word{background:#dbeafe;color:#1e40af;border-color:#93c5fd}.t-loc .tok-tag{background:#dbeafe;color:#1e40af}
+.t-dat .tok-word{background:#fef9c3;color:#854d0e;border-color:#fde047}.t-dat .tok-tag{background:#fef9c3;color:#854d0e}
+.t-mon .tok-word{background:#f0fdf4;color:#166534;border-color:#86efac}.t-mon .tok-tag{background:#f0fdf4;color:#166534}
+.t-o .tok-word{background:#f4f4f6;color:#6b7280;border-color:#d1d5db}.t-o .tok-tag{background:#f4f4f6;color:#6b7280}
+.info-box{background:#f7f8fc;border:1px solid #e2e4ea;border-radius:8px;padding:.75rem 1rem;font-size:.82rem;color:#444;line-height:1.6;margin-top:.75rem;min-height:52px}
+textarea{width:100%;min-height:70px;border:1.5px solid #e2e4ea;border-radius:8px;padding:10px 14px;font-family:inherit;font-size:.875rem;resize:vertical;outline:none;color:#1a1a2e;background:#fff;margin-bottom:.75rem}
+textarea:focus{border-color:#6c63ff}
+.btn{background:#6c63ff;color:#fff;font-size:13px;font-weight:600;padding:9px 20px;border-radius:8px;border:none;cursor:pointer}
+.btn:hover{background:#8b85ff}
+.btn-sm{background:none;border:1.5px solid #e2e4ea;color:#1a1a2e;font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;cursor:pointer;margin:4px 4px 4px 0}
+.btn-sm:hover{background:#f0f2f5}
+.bio-row{display:flex;flex-wrap:wrap;gap:8px;margin:.5rem 0}
+.bio-tok{padding:8px 14px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid transparent}
+.bio-tok[data-t="B-PER"],.bio-tok[data-t="I-PER"]{background:#ede9fe;color:#5b21b6;border-color:#c4b5fd}
+.bio-tok[data-t="B-ORG"],.bio-tok[data-t="I-ORG"]{background:#dcfce7;color:#166534;border-color:#86efac}
+.bio-tok[data-t="O"]{background:#f4f4f6;color:#6b7280;border-color:#d1d5db}
+.entity-chip{display:flex;justify-content:space-between;align-items:center;padding:7px 12px;border-radius:8px;font-size:13px;font-weight:600;border:1.5px solid transparent;margin-bottom:7px}
+.chip-per{background:#ede9fe;color:#5b21b6;border-color:#c4b5fd}
+.chip-org{background:#dcfce7;color:#166534;border-color:#86efac}
+.chip-loc{background:#dbeafe;color:#1e40af;border-color:#93c5fd}
+.chip-dat{background:#fef9c3;color:#854d0e;border-color:#fde047}
+.chip-mon{background:#f0fdf4;color:#166534;border-color:#86efac}
+.chip-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.7}
+.divider{border:none;border-top:1px solid #e2e4ea;margin:1.5rem 0}
+.qcard{background:#fff;border:1px solid #e2e4ea;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.qnum{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6c63ff;margin-bottom:.35rem}
+.qtext{font-size:.9rem;font-weight:600;color:#1a1a2e;margin-bottom:.3rem;line-height:1.5}
+.qsentence{font-size:.82rem;color:#555;font-style:italic;margin-bottom:.9rem;padding:.5rem .75rem;background:#f7f8fc;border-radius:6px;border-left:3px solid #6c63ff}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:1.5px solid #e2e4ea;background:#fff;cursor:pointer;font-size:.875rem;font-weight:500;color:#1a1a2e;text-align:left;width:100%}
+.opt:hover:not([disabled]){background:#f7f8fc;border-color:#bbb}
+.opt-letter{width:22px;height:22px;border-radius:50%;background:#f0f2f5;color:#555;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.opt.correct{background:#dcfce7;border-color:#86efac;color:#166534}
+.opt.correct .opt-letter{background:#86efac;color:#166534}
+.opt.wrong{background:#fee2e2;border-color:#fca5a5;color:#991b1b}
+.opt.wrong .opt-letter{background:#fca5a5;color:#991b1b}
+.opt.show-correct{background:#dcfce7;border-color:#86efac;color:#166534}
+.opt.show-correct .opt-letter{background:#86efac;color:#166534}
+.qfeedback{margin-top:.75rem;padding:.65rem .9rem;border-radius:8px;font-size:.82rem;line-height:1.55;display:none}
+.qfeedback.ok{display:block;background:#dcfce7;color:#166534;font-weight:600}
+.qfeedback.no{display:block;background:#fee2e2;color:#7f1d1d;font-weight:600}
+.score-box{background:#fff;border:1px solid #e2e4ea;border-radius:12px;padding:1.1rem 1.5rem;display:flex;align-items:center;gap:1.25rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.score-big{font-size:2rem;font-weight:800;color:#6c63ff;min-width:60px}
+.score-info{font-size:.875rem;color:#555;line-height:1.6}
+.score-info strong{color:#1a1a2e;display:block;margin-bottom:2px}
+@media(max-width:600px){.two-col{grid-template-columns:1fr}.hero{padding:1.5rem}.hero h1{font-size:1.4rem}}
+</style>
+
+<div class="hero">
+  <div class="badge-row">
+    <span class="pill">NLP Tool</span>
+    <span class="pill-sub">Educational Simulator</span>
+  </div>
+  <h1>Named Entity Recognition — V1</h1>
+  <p>Explore how NLP models detect and classify real-world names — people, organizations, locations, dates, and more — directly from raw text.</p>
+</div>
+
+<div class="page">
+
+  <div class="sec-title">What is NER?</div>
+  <div class="card">
+    <h3>Named Entity Recognition — in plain English</h3>
+    <p>When you read <em>"Sundar Pichai works at Google in California"</em>, your brain instantly knows <em>Sundar Pichai</em> is a person, <em>Google</em> is a company, and <em>California</em> is a place. NER teaches a computer to do the same thing automatically.</p>
+    <p style="margin-top:.5rem">It scans raw text, finds important words called <strong>named entities</strong>, and labels them by category — used in search engines, chatbots, medical records, news analysis, and more.</p>
+    <div class="legend" style="margin-top:1rem">
+      <div class="leg"><div class="leg-dot" style="background:#ede9fe;border:1.5px solid #c4b5fd"></div><span style="color:#5b21b6">Person</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#dcfce7;border:1.5px solid #86efac"></div><span style="color:#166534">Organization</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#dbeafe;border:1.5px solid #93c5fd"></div><span style="color:#1e40af">Location</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#fef9c3;border:1.5px solid #fde047"></div><span style="color:#854d0e">Date</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#f0fdf4;border:1.5px solid #86efac"></div><span style="color:#166534">Money</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#f4f4f6;border:1.5px solid #d1d5db"></div><span style="color:#6b7280">Other (O)</span></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="sec-title">How does it work? — step by step</div>
+
+  <div class="card">
+    <h3>The NER pipeline</h3>
+    <p>Every NER system follows these stages, from raw text to labeled entities:</p>
+    <div class="step-flow">
+      <div class="step-box">① Raw text</div><div class="step-arrow">→</div>
+      <div class="step-box">② Tokenize</div><div class="step-arrow">→</div>
+      <div class="step-box">③ Context via model</div><div class="step-arrow">→</div>
+      <div class="step-box">④ BIO tagging</div><div class="step-arrow">→</div>
+      <div class="step-box">⑤ Named entities</div>
+    </div>
+    <p style="margin-top:.9rem;font-size:.82rem;color:#555">
+      <strong>① Raw text</strong> — the input sentence as-is.<br>
+      <strong>② Tokenize</strong> — split into individual words and punctuation.<br>
+      <strong>③ Context</strong> — a neural model (like BERT) reads the whole sentence to understand meaning.<br>
+      <strong>④ BIO tagging</strong> — each token gets B- (begins entity), I- (inside entity), or O (not an entity).<br>
+      <strong>⑤ Entities</strong> — consecutive B/I tags are merged into final entity spans.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>What is BIO tagging?</h3>
+    <p>BIO stands for <strong>Begin, Inside, Outside</strong>. Click each word below to understand its tag:</p>
+    <div class="bio-row">
+      <div class="bio-tok" data-t="B-PER" onclick="showBio(this)">Steve</div>
+      <div class="bio-tok" data-t="I-PER" onclick="showBio(this)">Jobs</div>
+      <div class="bio-tok" data-t="O" onclick="showBio(this)">founded</div>
+      <div class="bio-tok" data-t="B-ORG" onclick="showBio(this)">Apple</div>
+      <div class="bio-tok" data-t="O" onclick="showBio(this)">in</div>
+      <div class="bio-tok" data-t="O" onclick="showBio(this)">1976</div>
+    </div>
+    <div class="info-box" id="bioBox">👆 Click any word above to see what its BIO tag means.</div>
+  </div>
+
+  <hr class="divider">
+  <div class="sec-title">Live annotator — try the demo</div>
+
+  <div class="card">
+    <h3>Annotated sentence</h3>
+    <p style="font-size:.82rem;color:#888;margin-bottom:.25rem">Click any highlighted word to inspect it.</p>
+    <div class="tokens-wrap" id="tokensGrid"></div>
+    <div class="info-box" id="inspector">👆 Click a coloured word above to see its entity details.</div>
+  </div>
+
+
+
+  <div class="card">
+    <h3>Quick example sentences</h3>
+    <p style="font-size:.82rem;color:#888;margin-bottom:.75rem">Click any example to load it into the annotator above.</p>
+    <button class="btn-sm" onclick="load('Elon Musk founded SpaceX in Hawthorne, California in 2002.')">News</button>
+    <button class="btn-sm" onclick="load('NASA scientists at JPL confirmed the Perseverance rover collected samples in January 2024.')">Science</button>
+    <button class="btn-sm" onclick="load('Goldman Sachs reported a $3.2 billion profit for Q3 2024, beating Wall Street expectations.')">Finance</button>
+    <button class="btn-sm" onclick="load('On June 6, 1944, General Dwight Eisenhower led Allied forces to Normandy.')">History</button>
+  </div>
+
+  <hr class="divider">
+  <div class="sec-title">Test your understanding — MCQ quiz</div>
+
+  <div class="score-box">
+    <div class="score-big" id="scoreNum">0 / 6</div>
+    <div class="score-info">
+      <strong id="scoreTitle">Answer all 6 questions below</strong>
+      <span id="scoreMsg">Your score updates as you go.</span>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="qcard">
+    <div class="qnum">Question 1 of 6</div>
+    <div class="qtext">Which word is a <strong>Person</strong> entity?</div>
+    <div class="qsentence">"Taylor Swift performed in London on Friday."</div>
+    <div class="opts" id="q1opts">
+      <button class="opt" onclick="pick(1,0,1)"><span class="opt-letter">A</span>London</button>
+      <button class="opt" onclick="pick(1,1,1)"><span class="opt-letter">B</span>Taylor Swift</button>
+      <button class="opt" onclick="pick(1,2,1)"><span class="opt-letter">C</span>performed</button>
+      <button class="opt" onclick="pick(1,3,1)"><span class="opt-letter">D</span>Friday</button>
+    </div>
+    <div class="qfeedback" id="q1fb"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="qcard">
+    <div class="qnum">Question 2 of 6</div>
+    <div class="qtext">What BIO tag does the word <strong>Activision</strong> get?</div>
+    <div class="qsentence">"Microsoft acquired Activision for $68.7 billion in 2023."</div>
+    <div class="opts" id="q2opts">
+      <button class="opt" onclick="pick(2,0,2)"><span class="opt-letter">A</span>O</button>
+      <button class="opt" onclick="pick(2,1,2)"><span class="opt-letter">B</span>I-ORG</button>
+      <button class="opt" onclick="pick(2,2,2)"><span class="opt-letter">C</span>B-ORG</button>
+      <button class="opt" onclick="pick(2,3,2)"><span class="opt-letter">D</span>B-PER</button>
+    </div>
+    <div class="qfeedback" id="q2fb"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="qcard">
+    <div class="qnum">Question 3 of 6</div>
+    <div class="qtext">What is the correct BIO tag for the word <strong>Obama</strong>?</div>
+    <div class="qsentence">"Barack Obama was born in Hawaii."</div>
+    <div class="opts" id="q3opts">
+      <button class="opt" onclick="pick(3,0,3)"><span class="opt-letter">A</span>B-PER</button>
+      <button class="opt" onclick="pick(3,1,3)"><span class="opt-letter">B</span>O</button>
+      <button class="opt" onclick="pick(3,2,3)"><span class="opt-letter">C</span>B-LOC</button>
+      <button class="opt" onclick="pick(3,3,3)"><span class="opt-letter">D</span>I-PER</button>
+    </div>
+    <div class="qfeedback" id="q3fb"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="qcard">
+    <div class="qnum">Question 4 of 6</div>
+    <div class="qtext">What entity type is <strong>September 2023</strong>?</div>
+    <div class="qsentence">"Apple launched the iPhone 15 in September 2023."</div>
+    <div class="opts" id="q4opts">
+      <button class="opt" onclick="pick(4,0,3)"><span class="opt-letter">A</span>Money</button>
+      <button class="opt" onclick="pick(4,1,3)"><span class="opt-letter">B</span>Organization</button>
+      <button class="opt" onclick="pick(4,2,3)"><span class="opt-letter">C</span>Location</button>
+      <button class="opt" onclick="pick(4,3,3)"><span class="opt-letter">D</span>Date</button>
+    </div>
+    <div class="qfeedback" id="q4fb"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="qcard">
+    <div class="qnum">Question 5 of 6</div>
+    <div class="qtext">Which entity type does <strong>WHO</strong> belong to?</div>
+    <div class="qsentence">"The WHO reported that malaria cases rose sharply in Africa."</div>
+    <div class="opts" id="q5opts">
+      <button class="opt" onclick="pick(5,0,1)"><span class="opt-letter">A</span>Person</button>
+      <button class="opt" onclick="pick(5,1,1)"><span class="opt-letter">B</span>Organization</button>
+      <button class="opt" onclick="pick(5,2,1)"><span class="opt-letter">C</span>Location</button>
+      <button class="opt" onclick="pick(5,3,1)"><span class="opt-letter">D</span>Date</button>
+    </div>
+    <div class="qfeedback" id="q5fb"></div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="qcard">
+    <div class="qnum">Question 6 of 6</div>
+    <div class="qtext">How many distinct named entities are in this sentence?</div>
+    <div class="qsentence">"Elon Musk donated $100 million to charity in December 2021."</div>
+    <div class="opts" id="q6opts">
+      <button class="opt" onclick="pick(6,0,2)"><span class="opt-letter">A</span>1</button>
+      <button class="opt" onclick="pick(6,1,2)"><span class="opt-letter">B</span>2</button>
+      <button class="opt" onclick="pick(6,2,2)"><span class="opt-letter">C</span>3</button>
+      <button class="opt" onclick="pick(6,3,2)"><span class="opt-letter">D</span>4</button>
+    </div>
+    <div class="qfeedback" id="q6fb"></div>
+  </div>
+
+  <hr class="divider">
+  <div class="sec-title">Real-world applications</div>
+  <div class="two-col">
+    <div class="card"><h3>Where NER is used</h3>
+      <ul>
+        <li><strong>Search engines</strong> — understand what you're searching for</li>
+        <li><strong>Chatbots</strong> — extract names, dates, locations from messages</li>
+        <li><strong>Medical records</strong> — identify drug names, symptoms, patient names</li>
+        <li><strong>News analysis</strong> — track companies, people, and places together</li>
+        <li><strong>Finance</strong> — extract company names and prices from reports</li>
+      </ul>
+    </div>
+    <div class="card"><h3>Common NER models</h3>
+      <ul>
+        <li><strong>spaCy</strong> — fast, production-ready Python library</li>
+        <li><strong>BERT-based models</strong> — high accuracy, pretrained on large corpora</li>
+        <li><strong>Stanford NER</strong> — one of the earliest and most cited systems</li>
+        <li><strong>Flair</strong> — contextual string embeddings for NER</li>
+        <li><strong>Hugging Face Transformers</strong> — off-the-shelf NER pipelines</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const EXPLANATIONS={
+  1:{correct:1,text:{0:'❌ Wrong — London is a <strong>Location</strong> (B-LOC), not a person. ✅ Correct answer: <strong>B — Taylor Swift</strong> → Person entity (B-PER + I-PER).',1:'✅ Correct! Taylor Swift is a Person entity. "Taylor" gets B-PER and "Swift" gets I-PER since it continues the same span.',2:'❌ Wrong — "performed" is a regular verb, tagged O (Outside). ✅ Correct answer: <strong>B — Taylor Swift</strong> → Person entity.',3:'❌ Wrong — Friday is a Date entity (B-DAT), not a person. ✅ Correct answer: <strong>B — Taylor Swift</strong> → Person entity (B-PER + I-PER).'}},
+  2:{correct:2,text:{0:'❌ Wrong — O means no entity at all. Activision is clearly a company name. ✅ Correct answer: <strong>C — B-ORG</strong> (it begins an Organization span).',1:'❌ Wrong — I-ORG is used only when a B-ORG token comes directly before it. Activision starts its own span. ✅ Correct answer: <strong>C — B-ORG</strong>.',2:'✅ Correct! Activision begins a new Organization entity span → B-ORG. It would be I-ORG only if preceded by another ORG token.',3:'❌ Wrong — Activision is a company, not a person. ✅ Correct answer: <strong>C — B-ORG</strong> (Organization).'}},
+  3:{correct:3,text:{0:'❌ Wrong — B-PER belongs to "Barack" since it begins the person span. "Obama" comes after, so it gets I-PER. ✅ Correct answer: <strong>D — I-PER</strong>.',1:'❌ Wrong — O means no entity. Obama is clearly a person\'s name. ✅ Correct answer: <strong>D — I-PER</strong>.',2:'❌ Wrong — Obama is a person, not a location. ✅ Correct answer: <strong>D — I-PER</strong> ("Barack" = B-PER, "Obama" = I-PER).',3:'✅ Correct! "Barack" gets B-PER (begins the span) and "Obama" comes inside → I-PER.'}},
+  4:{correct:3,text:{0:'❌ Wrong — Money entities are currency amounts like $100. September 2023 is a time reference. ✅ Correct answer: <strong>D — Date</strong>.',1:'❌ Wrong — Organization is for companies, institutions. September 2023 is a time period. ✅ Correct answer: <strong>D — Date</strong>.',2:'❌ Wrong — Location is for places. September 2023 is a temporal expression. ✅ Correct answer: <strong>D — Date</strong>.',3:'✅ Correct! September 2023 is a temporal expression → Date entity. "September" gets B-DAT and "2023" gets I-DAT.'}},
+  5:{correct:1,text:{0:'❌ Wrong — WHO (World Health Organization) is an institution, not a person. ✅ Correct answer: <strong>B — Organization</strong>.',1:'✅ Correct! WHO stands for World Health Organization → B-ORG. Even acronyms of organizations get the ORG tag.',2:'❌ Wrong — WHO is not a place. ✅ Correct answer: <strong>B — Organization</strong>.',3:'❌ Wrong — WHO is not a date. ✅ Correct answer: <strong>B — Organization</strong>.'}},
+  6:{correct:2,text:{0:'❌ Wrong — There are more than 1 entity. ✅ Correct answer: <strong>C — 3 entities</strong>: Elon Musk (Person), $100 million (Money), December 2021 (Date).',1:'❌ Wrong — You may have missed one. ✅ Correct answer: <strong>C — 3 entities</strong>: Elon Musk (Person), $100 million (Money), December 2021 (Date).',2:'✅ Correct! There are 3 entities: <em>Elon Musk</em> → Person, <em>$100 million</em> → Money, <em>December 2021</em> → Date. "charity" is a common noun, not a named entity.',3:'❌ Wrong — "charity" is a common noun, not a named entity. ✅ Correct answer: <strong>C — 3 entities</strong>: Elon Musk, $100 million, December 2021.'}}
+};
+
+const answered={};
+let correctCount=0;
+
+function pick(qnum,optIdx,correctIdx){
+  if(answered[qnum]!==undefined)return;
+  answered[qnum]=optIdx;
+  const isCorrect=optIdx===correctIdx;
+  if(isCorrect)correctCount++;
+
+  const opts=document.querySelectorAll('#q'+qnum+'opts .opt');
+  opts.forEach((btn,i)=>{
+    btn.disabled=true;
+    if(i===correctIdx&&!isCorrect) btn.classList.add('show-correct');
+  });
+  opts[optIdx].classList.add(isCorrect?'correct':'wrong');
+
+  const fb=document.getElementById('q'+qnum+'fb');
+  fb.className='qfeedback '+(isCorrect?'ok':'no');
+  fb.innerHTML=EXPLANATIONS[qnum].text[optIdx];
+
+  updateScore();
+}
+
+function updateScore(){
+  const done=Object.keys(answered).length;
+  document.getElementById('scoreNum').textContent=correctCount+' / 6';
+  if(done<6){
+    document.getElementById('scoreTitle').textContent=correctCount+' correct so far';
+    document.getElementById('scoreMsg').textContent=(6-done)+' question'+(6-done>1?'s':'')+' remaining.';
+  } else {
+    const pct=Math.round(correctCount/6*100);
+    document.getElementById('scoreTitle').textContent=pct>=83?'Excellent work! 🎉':pct>=50?'Good effort — review the red answers.':'Keep studying — NER takes practice!';
+    document.getElementById('scoreMsg').textContent='Final score: '+correctCount+'/6 ('+pct+'%)';
+  }
+}
+
+const RULES=[
+  {re:/^Sundar$/,tag:'B-PER',type:'Person',cls:'t-per'},
+  {re:/^Pichai[,]?$/,tag:'I-PER',type:'Person',cls:'t-per'},
+  {re:/^Elon$/,tag:'B-PER',type:'Person',cls:'t-per'},
+  {re:/^Musk$/,tag:'I-PER',type:'Person',cls:'t-per'},
+  {re:/^General$/,tag:'B-PER',type:'Person',cls:'t-per'},
+  {re:/^Dwight$/,tag:'I-PER',type:'Person',cls:'t-per'},
+  {re:/^Eisenhower$/,tag:'I-PER',type:'Person',cls:'t-per'},
+  {re:/^NASA$/,tag:'B-ORG',type:'Organization',cls:'t-org'},
+  {re:/^JPL$/,tag:'I-ORG',type:'Organization',cls:'t-org'},
+  {re:/^Google[,]?$/,tag:'B-ORG',type:'Organization',cls:'t-org'},
+  {re:/^Goldman$/,tag:'B-ORG',type:'Organization',cls:'t-org'},
+  {re:/^Sachs$/,tag:'I-ORG',type:'Organization',cls:'t-org'},
+  {re:/^SpaceX$/,tag:'B-ORG',type:'Organization',cls:'t-org'},
+  {re:/^California[.,]?$/,tag:'B-LOC',type:'Location',cls:'t-loc'},
+  {re:/^Hawthorne[,]?$/,tag:'B-LOC',type:'Location',cls:'t-loc'},
+  {re:/^New$/,tag:'B-LOC',type:'Location',cls:'t-loc'},
+  {re:/^York[.,]?$/,tag:'I-LOC',type:'Location',cls:'t-loc'},
+  {re:/^London$/,tag:'B-LOC',type:'Location',cls:'t-loc'},
+  {re:/^Normandy[.]?$/,tag:'B-LOC',type:'Location',cls:'t-loc'},
+  {re:/^Wall$/,tag:'B-LOC',type:'Location',cls:'t-loc'},
+  {re:/^\$[\d.]+$/,tag:'B-MON',type:'Money',cls:'t-mon'},
+  {re:/^billion$/,tag:'I-MON',type:'Money',cls:'t-mon'},
+  {re:/^20\d\d[.,]?$/,tag:'B-DAT',type:'Date',cls:'t-dat'},
+  {re:/^1944[,]?$/,tag:'B-DAT',type:'Date',cls:'t-dat'},
+  {re:/^2002[.]?$/,tag:'B-DAT',type:'Date',cls:'t-dat'},
+  {re:/^Q[1-4]$/,tag:'B-DAT',type:'Date',cls:'t-dat'},
+];
+
+function classify(tok){for(const r of RULES)if(r.re.test(tok))return{tag:r.tag,type:r.type,cls:r.cls};return{tag:'O',type:'Other (not an entity)',cls:'t-o'};}
+function tokenize(txt){return txt.match(/\S+/g)||[];}
+
+function renderTokens(tokens){
+  document.getElementById('tokensGrid').innerHTML=tokens.map((tok,i)=>{
+    const{tag,type,cls}=classify(tok);
+    return`<div class="tok ${cls}" onclick="inspect('${tok.replace(/'/g,"\\'")}','${tag}','${type}',${i})"><span class="tok-word">${tok}</span><span class="tok-tag">${tag}</span></div>`;
+  }).join('');
+}
+
+function inspect(tok,tag,type,pos){
+  const conf=tag==='O'?'—':(Math.floor(Math.random()*8)+91)+'%';
+  document.getElementById('inspector').innerHTML=`<strong>${tok}</strong> &nbsp;|&nbsp; Tag: <strong>${tag}</strong> &nbsp;|&nbsp; Type: <strong>${type}</strong> &nbsp;|&nbsp; Position: ${pos} &nbsp;|&nbsp; Confidence: ${conf}`;
+}
+
+function buildEntities(tokens){
+  const out=[];let i=0;
+  while(i<tokens.length){
+    const{tag,type}=classify(tokens[i]);
+    if(tag.startsWith('B-')){let phrase=tokens[i],j=i+1;while(j<tokens.length&&classify(tokens[j]).tag.startsWith('I-')){phrase+=' '+tokens[j];j++;}out.push({phrase,type});i=j;}else i++;
+  }
+  const map={'Person':'chip-per','Organization':'chip-org','Location':'chip-loc','Date':'chip-dat','Money':'chip-mon'};
+  if(!out.length)return'<p style="font-size:.82rem;color:#888">No entities found.</p>';
+  return out.map(e=>`<div class="entity-chip ${map[e.type]||''}">${e.phrase}<span class="chip-type">${e.type}</span></div>`).join('');
+}
+
+function runNER(){
+  const toks=tokenize(document.getElementById('nerInput').value);
+  renderTokens(toks);
+  document.getElementById('entityList').innerHTML=buildEntities(toks);
+  document.getElementById('inspector').innerHTML='👆 Click a coloured word above to see its entity details.';
+}
+
+function load(txt){
+  document.getElementById('nerInput').value=txt;runNER();
+  document.getElementById('tokensGrid').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+const BIO_INFO={
+  'B-PER':'<strong>B-PER</strong> — Beginning of a Person entity. "Steve" starts the name "Steve Jobs".',
+  'I-PER':'<strong>I-PER</strong> — Inside a Person entity. "Jobs" continues the name that started with B-PER.',
+  'B-ORG':'<strong>B-ORG</strong> — Beginning of an Organization entity. "Apple" begins (and ends) the company name.',
+  'O':'<strong>O</strong> — Outside any entity. Words like "founded" and "in" carry no named entity label.',
+};
+function showBio(el){document.getElementById('bioBox').innerHTML=BIO_INFO[el.dataset.t]||el.dataset.t;}
+
+runNER();
+</script>
